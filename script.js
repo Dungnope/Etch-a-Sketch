@@ -1,5 +1,5 @@
 const displayGrid = document.querySelector(".display");
-const displayItem = document.querySelector(".item");
+let displayItemNode = document.querySelectorAll(".item");
 
 let valueResolution;
 let input = 4;
@@ -7,18 +7,35 @@ function resolution() {
     input = check_conditions(input);
     if(input != null)
     {
-    displayGrid.textContent = "";
+    deleteSquare();
     valueResolution = input;
     let dimension = 800 / valueResolution;
     let resolutionPercentage = dimension / 800 * 100;
-    displayItem.style.flex = `0 0 ${resolutionPercentage}%`;
-    displayItem.style.height = `${resolutionPercentage}%`;
-    displayItem.style.backgroundColor = "white";
-    for(let i = 0; i < valueResolution * valueResolution; i++)
+    for(let i = 0; i < valueResolution**2; i++)
     {
-        const clone = displayItem.cloneNode(true);
-        displayGrid.appendChild(clone);
+        const displayItem = document.createElement("div");
+        displayItem.style.flex = `0 0 ${resolutionPercentage}%`;
+        displayItem.style.height = `${resolutionPercentage}%`;
+        displayItem.classList.add("item_add");
+
+        displayGrid.appendChild(displayItem);
+            displayItem.addEventListener("mouseover", (e) => {
+                let red = Math.floor(Math.random() * 256);
+                let green = Math.floor(Math.random() * 256);
+                let blue = Math.floor(Math.random() * 256);
+                e.target.style.backgroundColor = `rgb(${red},${green},${blue})`;
+        })
     }
+    
+    }
+}
+
+function deleteSquare()
+{
+    let child = displayGrid.lastElementChild;
+    while(child){
+        displayGrid.removeChild(child);
+        child = displayGrid.lastElementChild;
     }
 }
 
@@ -53,12 +70,16 @@ function check_conditions(input)
 }
 
 
-displayGrid.addEventListener("mouseover", (e) => {
-    let red = Math.floor(Math.random() * 256);
-    let green = Math.floor(Math.random() * 256);
-    let blue = Math.floor(Math.random() * 256);
-    e.target.style.backgroundColor = `rgb(${red},${green},${blue})`;
+displayItemNode.forEach((e) => {
+    e.addEventListener("mouseover", (e) => {
+        let red = Math.floor(Math.random() * 256);
+        let green = Math.floor(Math.random() * 256);
+        let blue = Math.floor(Math.random() * 256);
+        e.target.style.backgroundColor = `rgb(${red},${green},${blue})`;
 })
+})
+
+
 
 function erase_all(){
     displayGrid.removeAttribute("style");

@@ -1,8 +1,7 @@
 const displayGrid = document.querySelector(".display");
 let displayItemNode = document.querySelectorAll(".item");
-
 let valueResolution;
-let input = 4;
+let input = 16;
 function resolution() {
     input = check_conditions(input);
     if(input != null)
@@ -13,20 +12,26 @@ function resolution() {
     let resolutionPercentage = dimension / 800 * 100;
     for(let i = 0; i < valueResolution**2; i++)
     {
+        let red, green, blue;
         const displayItem = document.createElement("div");
         displayItem.style.flex = `0 0 ${resolutionPercentage}%`;
         displayItem.style.height = `${resolutionPercentage}%`;
         displayItem.classList.add("item_add");
-
         displayGrid.appendChild(displayItem);
+        let count = 0;
+        let alpha = 0
             displayItem.addEventListener("mouseover", (e) => {
-                let red = Math.floor(Math.random() * 256);
-                let green = Math.floor(Math.random() * 256);
-                let blue = Math.floor(Math.random() * 256);
-                e.target.style.backgroundColor = `rgb(${red},${green},${blue})`;
+                if(alpha < 1){
+                count += 0.1;
+                alpha = count.toFixed(1);
+                red = Math.floor(Math.random() * 256);
+                green = Math.floor(Math.random() * 256);
+                blue = Math.floor(Math.random() * 256);
+                }
+                else {red = 0; green = 0; blue  = 0};
+                e.target.style.backgroundColor = `rgba(${red},${green},${blue},${alpha})`;
         })
     }
-    
     }
 }
 
@@ -69,17 +74,29 @@ function check_conditions(input)
     return input;
 }
 
-
 displayItemNode.forEach((e) => {
+    let count = 0;
+    let alpha = 0;
+    let red, green, blue;
     e.addEventListener("mouseover", (e) => {
-        let red = Math.floor(Math.random() * 256);
-        let green = Math.floor(Math.random() * 256);
-        let blue = Math.floor(Math.random() * 256);
-        e.target.style.backgroundColor = `rgb(${red},${green},${blue})`;
+        if(alpha < 1)
+        {
+            count += 0.1;
+            alpha = count.toFixed(1);
+            red = Math.floor(Math.random() * 256);
+            green = Math.floor(Math.random() * 256);
+            blue = Math.floor(Math.random() * 256);
+        }
+        else
+        {
+            red = 0;
+            green = 0;
+            blue = 0;
+        }
+        console.log(alpha);
+        e.target.style.backgroundColor = `rgba(${red},${green},${blue}, ${count})`;
 })
 })
-
-
 
 function erase_all(){
     displayGrid.removeAttribute("style");
@@ -91,5 +108,3 @@ function erase_all(){
         }
     }
 }
-
-

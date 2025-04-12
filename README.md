@@ -14,4 +14,4 @@ Explain fuction:
 + It can react as `Erase` when click on it again
 
 # Normal color
-+ Click this to draw as usually but not erase regard less your previous mode is Shade mode
++ Click this to draw as usually but not erase regard less your previous mode is `Shade mode`

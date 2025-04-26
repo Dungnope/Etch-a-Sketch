@@ -1,8 +1,10 @@
 const displayGrid = document.querySelector(".display");
 let displayItemNode = document.querySelectorAll(".item");
+let chooseOption = document.querySelector(".options");
 let valueResolution;
 let input = 16;
-function resolutionGridCreate() {
+let chooseMode = 1;
+function resolutionGridCreate(callback) {
     input = check_conditions(input);
     if(input != null)
     {
@@ -16,11 +18,16 @@ function resolutionGridCreate() {
         const displayItem = document.createElement("div");
         displayItem.style.flex = `0 0 ${resolutionPercentage}%`;
         displayItem.style.height = `${resolutionPercentage}%`;
-        displayItem.classList.add("item_add");
+        displayItem.classList.add("item");
         displayGrid.appendChild(displayItem);
-        let count = 0;
-        let alpha = 0
-            displayItem.addEventListener("mouseover", normal_color);
+        if(chooseMode == 1)
+        {
+            normal_color()
+        }
+        else if(chooseMode == 2)
+        {
+            shade_color();
+        }
     }
     }
 }
@@ -76,22 +83,13 @@ displayItemNode.forEach((e) => {
 
 function shade_color()
 { 
-    valueResolution = input;
-    let dimension = 800 / valueResolution;
-    let resolutionPercentage = dimension / 800 * 100;
-    deleteSquare();
-    for(let i = 0; i < valueResolution**2; i++)
-        {
-            let red, green, blue;
-            const displayItem = document.createElement("div");
-            displayItem.style.flex = `0 0 ${resolutionPercentage}%`;
-            displayItem.style.height = `${resolutionPercentage}%`;
-            displayItem.classList.add("item_add");
-            displayGrid.appendChild(displayItem);
+    let red, green, blue;
+    const displayItem = document.querySelectorAll(".item");
+        displayItem.forEach((e) => {
             let count = 0;
-            let alpha = 0
-                displayItem.addEventListener("mouseover", (e) => {
-                    if(alpha < 1){
+            let alpha = 0;
+            e.addEventListener("mouseover", (event) => {
+                if(alpha < 1){
                     count += 0.1;
                     alpha = count.toFixed(1);
                     red = Math.floor(Math.random() * 256);
@@ -99,14 +97,15 @@ function shade_color()
                     blue = Math.floor(Math.random() * 256);
                     }
                     else {red = 0; green = 0; blue  = 0};
-                    e.target.style.backgroundColor = `rgba(${red},${green},${blue},${alpha})`;
+                    event.target.style.backgroundColor = `rgba(${red},${green},${blue},${alpha})`;
             })
-        }
+        })
+    chooseMode = 2;
 }
 
 function normal_color()
 {
-    const displayItemAdd = document.querySelectorAll(".item_add");
+    const displayItemAdd = document.querySelectorAll(".item");
     displayItemAdd.forEach((e) => {
         let red, green, blue;
         e.addEventListener("mouseover", (event) => {
@@ -116,6 +115,7 @@ function normal_color()
             event.target.style.backgroundColor = `rgb(${red},${green},${blue})`;
     })
     })
+    chooseMode = 1;
 }
 
 function erase_all(){
